@@ -1,6 +1,5 @@
 package com.vpmedia.vbotsdksample
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -9,6 +8,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
@@ -49,14 +50,25 @@ class MainActivity : AppCompatActivity(), ChooseHotline.ListenerBottomSheet {
         }
 
         binding.btnDisconnect.setOnClickListener {
-            MyApplication.client.disconnect()
+            binding.btnDisconnect.isEnabled = false
+            binding.btnDisconnect.setBackgroundResource(R.drawable.bg_red_20)
 
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.btnDisconnect.isEnabled = true
+                binding.btnDisconnect.setBackgroundResource(R.drawable.bg_red_50)
+            }, 2000)
+            MyApplication.client.disconnect()
             updateView()
         }
 
         binding.btnConnect.setOnClickListener {
+            binding.btnConnect.setBackgroundResource(R.drawable.bg_main_10_op50)
+            binding.btnConnect.isEnabled = false
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.btnConnect.isEnabled = true
+                binding.btnConnect.setBackgroundResource(R.drawable.bg_main_10)
+            }, 2000)
             MyApplication.client.connect(binding.etToken.text.toString(), MyApplication.tokenFirebase)
-
             updateView()
         }
 
@@ -80,28 +92,23 @@ class MainActivity : AppCompatActivity(), ChooseHotline.ListenerBottomSheet {
         //click button call
         binding.btnCall.setOnClickListener {
             closeKeyboard(this)
-            if (hasPermission(this, Manifest.permission.RECORD_AUDIO) && hasPermission(this, Manifest.permission.READ_PHONE_STATE)) {
-                val hotline = binding.etHotline.text.toString().trim()
-                val to = binding.etNumber.text.toString().trim()
-                Log.d("LogApp", to)
-                //tạo call đi
-                val avatar = "https://i.pravatar.cc/300"
-                val checkSum = if (to == "112" || to == "113") {
-                    "ios${UUID.randomUUID()}"
-                } else {
-                    "android${UUID.randomUUID()}"
-                }
-                MyApplication.client.startCall(phone = to, hotline = hotline, checkSum = checkSum, avatar = avatar)
-
+            binding.btnCall.setBackgroundResource(R.drawable.bg_main_10_op50)
+            binding.btnCall.isEnabled = false
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.btnCall.isEnabled = true
+                binding.btnCall.setBackgroundResource(R.drawable.bg_main_10)
+            }, 2000)
+            val hotline = binding.etHotline.text.toString().trim()
+            val to = binding.etNumber.text.toString().trim()
+            Log.d("LogApp", to)
+            //tạo call đi
+            val avatar = "https://i.pravatar.cc/300"
+            val checkSum = if (to == "112" || to == "113") {
+                "ios${UUID.randomUUID()}"
             } else {
-                //check quyền
-                requestPermissions(
-                    arrayOf(
-                        Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.READ_PHONE_STATE
-                    ), 1
-                )
+                "android${UUID.randomUUID()}"
             }
+            MyApplication.client.startCall(phone = to, hotline = hotline, checkSum = checkSum, avatar = avatar)
         }
 
         updateView()
@@ -120,16 +127,6 @@ class MainActivity : AppCompatActivity(), ChooseHotline.ListenerBottomSheet {
             }
         }
 
-        if (hasPermission(this, Manifest.permission.RECORD_AUDIO) && hasPermission(this, Manifest.permission.READ_PHONE_STATE)) {
-
-        } else {
-            requestPermissions(
-                arrayOf(
-                    Manifest.permission.RECORD_AUDIO,
-                    Manifest.permission.READ_PHONE_STATE
-                ), 1
-            )
-        }
     }
 
     private fun updateView() {
@@ -149,20 +146,8 @@ class MainActivity : AppCompatActivity(), ChooseHotline.ListenerBottomSheet {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == 1) {
-
-            val hotline = binding.etHotline.text.toString().trim()
-            val to = binding.etNumber.text.toString().trim()
-            val checkSum = if (to == "112") {
-                "ios${UUID.randomUUID()}"
-            } else {
-                "android${UUID.randomUUID()}"
-            }
-            if (to.isNotEmpty()) {
-                runOnUiThread {
-                    MyApplication.client.startCall(phone = to, hotline = hotline, checkSum = checkSum)
-                }
-            }
+        if (requestCode == MyApplication.client.requestCodePermissions) {
+            MyApplication.client.handlePermissionsResult(requestCode, permissions, grantResults)
         }
     }
 
