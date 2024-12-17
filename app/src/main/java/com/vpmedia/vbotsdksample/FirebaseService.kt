@@ -12,6 +12,8 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.vpmedia.sdkvbot.client.VBotConfig
+import com.vpmedia.sdkvbot.en.AccountType
 import kotlin.random.Random
 
 
@@ -34,7 +36,7 @@ class FirebaseService : FirebaseMessagingService() {
                     "call" -> {
                         MyApplication.initClient(this@FirebaseService)
                         if (!MyApplication.client.isSetup()) {
-                            MyApplication.client.setup()
+                            MyApplication.client.setup(VBotConfig(AccountType.customer))
                         }
                         MyApplication.client.notificationCall(hashMap)
                     }
