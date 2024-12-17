@@ -15,7 +15,9 @@ import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.vpmedia.sdkvbot.client.ClientListener
+import com.vpmedia.sdkvbot.client.VBotConfig
 import com.vpmedia.sdkvbot.domain.pojo.mo.Hotline
+import com.vpmedia.sdkvbot.en.AccountType
 import com.vpmedia.vbotsdksample.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +45,7 @@ class MainActivity : AppCompatActivity(), ChooseHotline.ListenerBottomSheet {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         MyApplication.initClient(this)
-        MyApplication.client.setup()
+        MyApplication.client.setup(VBotConfig(AccountType.customer))
 
         binding.llMain.setOnClickListener {
             closeKeyboard(this)
@@ -108,6 +110,7 @@ class MainActivity : AppCompatActivity(), ChooseHotline.ListenerBottomSheet {
             } else {
                 "android${UUID.randomUUID()}"
             }
+            Log.d("LogApp", "checkSum: $checkSum")
             MyApplication.client.startCall(phone = to, hotline = hotline, checkSum = checkSum, avatar = avatar)
         }
 
@@ -133,22 +136,6 @@ class MainActivity : AppCompatActivity(), ChooseHotline.ListenerBottomSheet {
         val name = MyApplication.client.getAccountUsername()
         binding.tvName.text = name
         Log.d("asjkhdkaj", name)
-    }
-
-    private fun hasPermission(context: Context, permission: String): Boolean {
-        return context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == MyApplication.client.requestCodePermissions) {
-            MyApplication.client.handlePermissionsResult(requestCode, permissions, grantResults)
-        }
     }
 
     private fun isMiuiWithApi28OrMore(): Boolean {
