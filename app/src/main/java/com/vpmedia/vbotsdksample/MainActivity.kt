@@ -100,10 +100,11 @@ class MainActivity : AppCompatActivity(), ChooseHotline.ListenerBottomSheet {
                 binding.btnCall.isEnabled = true
                 binding.btnCall.setBackgroundResource(R.drawable.bg_main_10)
             }, 2000)
+
+            //tạo call đi
             val hotline = binding.etHotline.text.toString().trim()
             val to = binding.etNumber.text.toString().trim()
             Log.d("LogApp", to)
-            //tạo call đi
             val avatar = "https://i.pravatar.cc/300"
             val checkSum = if (to == "112" || to == "113") {
                 "ios${UUID.randomUUID()}"
@@ -193,7 +194,7 @@ class MainActivity : AppCompatActivity(), ChooseHotline.ListenerBottomSheet {
         MyApplication.client.removeListener(listener)
     }
 
-    fun closeKeyboard(activity: Activity) {
+   private fun closeKeyboard(activity: Activity) {
         val view = activity.currentFocus
         if (view != null) {
             val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
