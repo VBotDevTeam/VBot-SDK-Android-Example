@@ -35,9 +35,6 @@ class FirebaseService : FirebaseMessagingService() {
                 when (type) {
                     "call" -> {
                         MyApplication.initClient(this@FirebaseService)
-                        if (!MyApplication.client.isSetup()) {
-                            MyApplication.client.setup(VBotConfig(AccountType.customer))
-                        }
                         MyApplication.client.notificationCall(hashMap)
                     }
                 }
