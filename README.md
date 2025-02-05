@@ -1,8 +1,12 @@
 # VBot-SDK-Android-Example
 
+# Android SDK
+
+---
+
 ## Code demo
 
-[https://github.com/VBotDevTeam/VBot-SDK-Android-Example](https://github.com/VBotDevTeam/VBot-SDK-Android-Example)
+https://github.com/VBotDevTeam/VBot-SDK-Android-Example
 
 ---
 
@@ -14,73 +18,13 @@ Android SDK version 23 trở lên
 
 ## Cấu hình SDK
 
-Trong file **app** → **libs** của dự án thêm **SDKVBot.aar**
+Trong file **app** → **libs** của dự án thêm **vbotphonesdk.aar**
 
-Trong file **app** → **build.gradle** thêm
+Trong file **app** → **build.gradle** thêm 
 
 ```kotlin
 dependencies {
-    implementation files('libs/SDKVBot.aar')
-}
-```
-
-Thêm **google-services.json** vào thư mục **app**
-
-Trong file **build.gradle(Module :app)**
-
-Ở mục **dependencies**
-
-Thêm 2 dòng sau:
-
-```kotlin
-implementation platform('com.google.firebase:firebase-bom:32.4.0')
-implementation 'com.google.firebase:firebase-messaging-ktx:23.3.1'
-```
-
-Ở mục **plugins**
-
-Thêm dòng sau:
-
-```kotlin
-plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id 'com.google.gms.google-services'
-}
-```
-
-Trong file **build.gradle(Project)**
-
-Ở mục **plugins**
-
-Thêm dòng sau:
-
-```kotlin
-id 'com.google.gms.google-services' version '4.4.0' apply false
-```
-
-Trong file **manifests** ở thư mục **application**
-
-Thêm những dòng sau:
-
-```kotlin
-<service
-	android:name=".FirebaseService"
-	android:exported="false"
-	android:stopWithTask="false">
-	<intent-filter>
-		<action android:name="com.google.firebase.MESSAGING_EVENT" />
-	</intent-filter>
-</service>
-```
-
-Tạo class để đón thông báo cuộc gọi
-
-```kotlin
-class FirebaseService : FirebaseMessagingService() {
-	// Nhận thông báo cuộc gọi
-	override fun onMessageReceived(remoteMessage: RemoteMessage) {
-	}
+    implementation files('libs/vbotphonesdk.aar')
 }
 ```
 
@@ -90,31 +34,46 @@ class FirebaseService : FirebaseMessagingService() {
 
 Danh sách các quyền cần thiết để SDK hoạt động:
 
-1. **Quyền truy cập điện thoại**
+1.	**Quyền truy cập điện thoại**
 
-- Kiểm tra trạng thái thiết bị (cuộc gọi đến/đi, đang bận, hoặc rảnh).
+•	Kiểm tra trạng thái thiết bị (cuộc gọi đến/đi, đang bận, hoặc rảnh).
 
-- Thực hiện và quản lý cuộc gọi VoIP.
+•	Thực hiện và quản lý cuộc gọi VoIP.
 
-- **Lưu ý**: Đây là quyền **bắt buộc** để SDK hoạt động.
+•	**Lưu ý**: Đây là quyền **bắt buộc** để SDK hoạt động.
 
-2. **Quyền truy cập micro**
+2.	**Quyền truy cập micro** 
 
-- Thu âm giọng nói để gửi trong các cuộc gọi VoIP.
+•	Thu âm giọng nói để gửi trong các cuộc gọi VoIP.
 
-- **Lưu ý**: Đây là quyền **bắt buộc**.
+•	**Lưu ý**: Đây là quyền **bắt buộc** để SDK hoạt động.
 
-3. **Quyền truy cập thiết bị ở gần**
+3.	**Quyền truy cập thiết bị ở gần** 
 
-- Kết nối với các thiết bị Bluetooth như tai nghe hoặc loa ngoài để sử dụng trong cuộc gọi.
+•	Kết nối với các thiết bị Bluetooth như tai nghe hoặc loa ngoài để sử dụng trong cuộc gọi.
 
-4. **Quyền thông báo**
+4.	**Quyền thông báo** 
 
-- Hiển thị thông báo cuộc gọi đến hoặc các sự kiện quan trọng từ SDK.
+•	Hiển thị thông báo cuộc gọi đến hoặc các sự kiện quan trọng từ SDK.
 
-5. **Quyền hiển thị trên ứng dụng khác**
+5.	**Quyền hiển thị trên ứng dụng khác** 
 
-- Hiển thị thông báo quan trọng (ví dụ: thông báo cuộc gọi đến) dưới dạng “màn hình nổi” hoặc “pop-up” ngay cả khi ứng dụng đang ở chế độ nền hoặc màn hình khóa.
+•	Hiển thị thông báo quan trọng (thông báo cuộc gọi đến) dưới dạng “màn hình nổi” hoặc “pop-up” ngay cả khi ứng dụng đang ở chế độ nền hoặc màn hình khóa.
+
+## Proguard
+
+Khi sử dụng proguard cần thêm để sdk có thể hoạt động bình thường
+
+```kotlin
+-keep class com.vpmedia.vbotphonesdk.** {*;}
+
+-keep class io.reactivex.** {*;}
+
+-keep class org.linphone.** { *; }
+-keepclassmembers class org.linphone.** { *; }
+
+-keep class retrofit2.** { *; }
+```
 
 ## Sử dụng SDK
 
@@ -122,115 +81,62 @@ Danh sách các quyền cần thiết để SDK hoạt động:
 
 ### Khởi tạo
 
-```kotlin
-var client = VBotClient(context)
-```
-
-Chạy hàm setup để khởi động sdk
 
 ```kotlin
-fun setup(vBotConfig: VBotConfig)
+fun setup(context: Context, token: String)
 ```
 
-Truyền cofig vào hàm setup
-
-```kotlin
-VBotConfig(
-	accountType: AccountType,
-	supportDarkMode: Boolean = true
-)
-```
+Trong đó:
+- **token** là App Token, đại diện cho ứng dụng của bạn được dùng để xác thực với máy chủ VBot 
+- **config** là cấu hình tùy chọn cho SDK
 
 ---
-
-### Kết nối
-
-Hàm này chỉ cần gọi duy nhất một lần khi người dùng đăng nhập vào app của bạn
-
-Sau khi connect thành công thì dữ liệu sẽ được lưu vào SDK
-
-Sau khi người dùng tắt app và mở lại thì **client.setup()** là đủ để SDK hoạt động
-
-```kotlin
-fun connect(token: String, tokenFirebase: String?)
-```
-
-- token: Token SDK của tài khoản VBot
-- tokenFirebase: Có thể truyền hoặc không
-
----
-
-### Ngắt kết nối
-
-Hàm này sẽ cần gọi thì người dùng đăng xuất khỏi ứng dụng
-
-Tất cả dữ liệu SDK sẽ bị xóa
-
-Sau khi người dùng tắt app và mở lại thì cần gọi **connect** với **token**
-
-```kotlin
-fun disconnect(): Boolean
-```
-
----
-
-### Lấy tên hiển thị
-
-```kotlin
-fun getAccountUsername(): String
-```
-
----
-
 ### Lắng nghe sự kiện
 
 ```kotlin
-fun addListener(listener: ClientListener)
+fun addListener(listener: VBotListener)
 ```
+
+```kotlin
+class VBotListener {
+
+    override fun onCallState(state: CallState) {
+    }
+
+    override fun onErrorCode(erCode: Int, message: String) {
+    }
+
+    override fun onMessageButtonClick() {
+
+    }
+}
+```
+`onCallState` trả về trạng thái của cuộc gọi
+`onErrorCode` trả về lỗi và mã lỗi
+`onMessageButtonClick` trả về sự kiện khi người dùng nhấn vào nút nhắn tin
 
 ---
 
 ### Xoá lắng nghe sự kiện
 
 ```kotlin
-fun removeListener(listener: ClientListener)
-```
-
----
-
-### Lấy danh sách Hotline
-
-```kotlin
-suspend fun getHotlines(): List<Hotline>?
-```
-
-Model Hotline
-
-```kotlin
-data class Hotline(
-    @SerializedName("name")
-    @Expose
-    val name: String = "",
-
-    @SerializedName("phoneNumber")
-    @Expose
-    val phoneNumber: String = ""
-)
+fun removeListener(listener: VBotListener)
 ```
 
 ---
 
 ### Gọi đi
 
+Để thực hiện cuộc gọi đi, hãy sử dụng hàm startOutgoingCall
 ```kotlin
 fun startOutgoingCall(
-		callerId: String,
-		callerAvatar: String? = null,
-		callerName: String,
-		calleeId: String,
-		calleeAvatar: String? = null,
-		calleeName: String,
-		checkSum: String
+		 callerId: String, <Mã người gọi>
+    callerAvatar: String? = null, <Avatar người gọi>
+    callerName: String,<Tên người gọi>
+    calleeId: String, <Mã người nghe>
+    calleeAvatar: String? = null, <Avatar người nghe>
+    calleeName: String,<Tên người nghe>
+    checkSum: String,<Mã xác thực cuộc gọi>
 )
 ```
 
@@ -238,18 +144,19 @@ fun startOutgoingCall(
 
 ### Gọi đến
 
-Tạo cuộc gọi đến
-Hàm được sử dụng để xử lý và thông báo về các thông tin cuộc gọi nhận được.
+Để nhận cuộc gọi đến
+Trong hàm onMessageReceived kế thừa từ FirebaseMessagingService hãy sử dụng hàm startIncomingCall
 
 ```kotlin
 fun startIncomingCall(
-    callerId: String,
-    callerAvatar: String? = null,
-    callerName: String,
-    calleeId: String,
-    calleeAvatar: String? = null,
-    calleeName: String,
-    checkSum: String
+    callerId: String, <Mã người gọi>
+    callerAvatar: String? = null, <Avatar người gọi>
+    callerName: String,<Tên người gọi>
+    calleeId: String, <Mã người nghe>
+    calleeAvatar: String? = null, <Avatar người nghe>
+    calleeName: String,<Tên người nghe>
+    checkSum: String,<Mã xác thực cuộc gọi>
+    metadata: HashMap<String, String> <MetaData của cuộc gọi>
 )
 ```
 
@@ -266,3 +173,4 @@ Khi app thay đổi ngôn ngữ, hãy dùng hàm **setLocalizationStrings(string
 ```kotlin
 fun setLocalizationStrings(values: Map<String, String?>)
 ```
+Truyền dữ liệu qua metadata khi gọi hàm startIncomingCall
