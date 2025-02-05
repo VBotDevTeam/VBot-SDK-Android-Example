@@ -30,13 +30,13 @@ android {
             jniDebuggable false
         }
         debug {
-//            applicationIdSuffix ".debug"
-//            versionNameSuffix " debug"
-            minifyEnabled true
-            shrinkResources true
+            applicationIdSuffix ".debug"
+            versionNameSuffix " debug"
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            debuggable false
-            jniDebuggable false
+            debuggable true
+            jniDebuggable true
         }
     }
     compileOptions {
