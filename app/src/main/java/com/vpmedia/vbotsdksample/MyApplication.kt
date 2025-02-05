@@ -4,50 +4,33 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import com.google.firebase.messaging.FirebaseMessaging
-import com.vpmedia.sdkvbot.client.VBotClient
+import com.google.firebase.FirebaseApp
+import com.vpmedia.vbotphonesdk.VBotPhone
 
 class MyApplication : Application() {
     companion object {
         @SuppressLint("StaticFieldLeak")
-        lateinit var client: VBotClient
-        var tokenFirebase: String = ""
+        lateinit var client: VBotPhone
 
         // kiểm tra khởi tạo VBotClient
         fun clientExists(): Boolean {
             return ::client.isInitialized
         }
 
-//        //Khởi tạo VBotClient
-        fun initClient(context: Context) {
+        //        //Khởi tạo VBotClient
+        fun initClient(context: Context, token: String) {
             if (clientExists()) {
-                Log.d("LogApp", "Skipping Client creation")
+                Log.d("MainActivity", "Skipping Client creation")
                 return
             }
-            Log.d("LogApp", "startClient")
-            client = VBotClient(context)
+            Log.d("MainActivity", "startClient")
+            client = VBotPhone.setup(context, token)
         }
     }
 
     override fun onCreate() {
         super.onCreate()
-        //Lấy firebase Token
-        getTokenFirebase()
+        FirebaseApp.initializeApp(this)
     }
 
-    private fun getTokenFirebase() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            try {
-                if (task.isSuccessful) {
-                    val token = task.result
-                    if (!token.isNullOrEmpty()) {
-                        tokenFirebase = token
-                        Log.d("token", token)
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
 }

@@ -27,7 +27,7 @@
         </activity>
 
         <service
-            android:name=".FirebaseService"
+            android:name=".firebase.FirebaseService"
             android:exported="false"
             android:stopWithTask="false">
             <intent-filter>
@@ -35,7 +35,15 @@
             </intent-filter>
         </service>
 
-
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.vpmedia.vbotsdksample.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

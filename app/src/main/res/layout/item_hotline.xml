@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="5dp"
-    android:orientation="vertical">
+    android:layout_margin="5dp"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingHorizontal="5dp"
+    android:paddingVertical="15dp">
+
+    <ImageView
+        android:id="@+id/ivType"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:importantForAccessibility="no"
+        app:tint="@color/white" />
 
     <TextView
-        android:id="@+id/tvNumberHotline"
-        android:layout_width="match_parent"
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginStart="10dp"
         android:gravity="center"
-        android:background="@drawable/bg_bg_10"
-        android:padding="15dp"
-        android:textColor="@color/black"
-        android:textSize="17sp" />
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
 </LinearLayout>

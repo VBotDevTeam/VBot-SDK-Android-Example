@@ -2,11 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="red">#FF0000</color>
+    <color name="vbot">#1DAC4E</color>
+    <color name="blue">#0080FF</color>
+    <color name="blue50">#800080FF</color>
     <color name="red50">#80FF0000</color>
     <color name="red20">#33FF0000</color>
-    <color name="green">#008000</color>
-    <color name="green50">#80008000</color>
-    <color name="bg">#F0F0F0</color>
-
 </resources>

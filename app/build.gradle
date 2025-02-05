@@ -12,8 +12,8 @@ android {
         applicationId "com.vpmedia.vbotsdksample"
         minSdk 23
         targetSdk 35
-        versionCode 1
-        versionName "1.0"
+        versionCode 5
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -28,32 +28,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
             jniDebuggable false
-            renderscriptDebuggable false
-            multiDexEnabled true
         }
         debug {
-            applicationIdSuffix ".debug"
-            versionNameSuffix " debug"
-            minifyEnabled false
-            shrinkResources false
+//            applicationIdSuffix ".debug"
+//            versionNameSuffix " debug"
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            debuggable true
-            jniDebuggable true
-            renderscriptDebuggable false
-            multiDexEnabled true
+            debuggable false
+            jniDebuggable false
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
 }
 
 dependencies {
-    implementation files('libs/SDKVBot.aar')
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -68,4 +63,5 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:33.7.0')
     implementation 'com.google.firebase:firebase-messaging-ktx:24.1.0'
 
+    implementation files('libs/vbotphonesdk.aar')
 }
