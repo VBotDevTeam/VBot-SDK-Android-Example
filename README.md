@@ -67,12 +67,8 @@ Khi sử dụng proguard cần thêm để sdk có thể hoạt động bình th
 ```kotlin
 -keep class com.vpmedia.vbotphonesdk.** {*;}
 
--keep class io.reactivex.** {*;}
-
 -keep class org.linphone.** { *; }
 -keepclassmembers class org.linphone.** { *; }
-
--keep class retrofit2.** { *; }
 ```
 
 ## Sử dụng SDK
