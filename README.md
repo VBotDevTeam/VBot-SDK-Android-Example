@@ -1,5 +1,3 @@
-# VBot-SDK-Android-Example
-
 # Android SDK
 
 ---
@@ -20,10 +18,23 @@ Android SDK version 23 trở lên
 
 Trong file **app** → **libs** của dự án thêm **vbotphonesdk.aar**
 
-Trong file **app** → **build.gradle** thêm 
+Trong file **app** → **build.gradle** thêm
+
+Cần thêm các thư viện cần thiết để SDK hoạt động
 
 ```kotlin
 dependencies {
+    //các thư viện cần thiết để SDK hoạt động
+    implementation("io.reactivex.rxjava2:rxjava:2.2.21")
+    implementation("com.google.code.gson:gson:2.11.0")
+    implementation("com.squareup.retrofit2:adapter-rxjava2:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.okio:okio:3.9.0")
+    implementation("org.reactivestreams:reactive-streams:1.0.4")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
+    implementation("com.jakewharton.timber:timber:5.0.1")
+
     implementation files('libs/vbotphonesdk.aar')
 }
 ```
@@ -42,21 +53,21 @@ Danh sách các quyền cần thiết để SDK hoạt động:
 
 •	**Lưu ý**: Đây là quyền **bắt buộc** để SDK hoạt động.
 
-2.	**Quyền truy cập micro** 
+2.	**Quyền truy cập micro**
 
 •	Thu âm giọng nói để gửi trong các cuộc gọi VoIP.
 
 •	**Lưu ý**: Đây là quyền **bắt buộc** để SDK hoạt động.
 
-3.	**Quyền truy cập thiết bị ở gần** 
+3.	**Quyền truy cập thiết bị ở gần**
 
 •	Kết nối với các thiết bị Bluetooth như tai nghe hoặc loa ngoài để sử dụng trong cuộc gọi.
 
-4.	**Quyền thông báo** 
+4.	**Quyền thông báo**
 
 •	Hiển thị thông báo cuộc gọi đến hoặc các sự kiện quan trọng từ SDK.
 
-5.	**Quyền hiển thị trên ứng dụng khác** 
+5.	**Quyền hiển thị trên ứng dụng khác**
 
 •	Hiển thị thông báo quan trọng (thông báo cuộc gọi đến) dưới dạng “màn hình nổi” hoặc “pop-up” ngay cả khi ứng dụng đang ở chế độ nền hoặc màn hình khóa.
 
@@ -83,7 +94,7 @@ fun setup(context: Context, token: String)
 ```
 
 Trong đó:
-- **token** là App Token, đại diện cho ứng dụng của bạn được dùng để xác thực với máy chủ VBot 
+- **token** là App Token, đại diện cho ứng dụng của bạn được dùng để xác thực với máy chủ VBot
 - **config** là cấu hình tùy chọn cho SDK
 
 ---
