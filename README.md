@@ -24,7 +24,7 @@ Cần thêm các thư viện cần thiết để SDK hoạt động
 
 ```kotlin
 dependencies {
-		//các thư viện cần thiết để SDK hoạt động
+    //các thư viện cần thiết để SDK hoạt động
     implementation("io.reactivex.rxjava2:rxjava:2.2.21")
     implementation("com.google.code.gson:gson:2.11.0")
     implementation("com.squareup.retrofit2:adapter-rxjava2:2.11.0")
@@ -36,19 +36,19 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
     implementation("com.jakewharton.timber:timber:5.0.1")
 
-		//Thêm SDK
+    //Thêm SDK
     implementation 'com.github.VBotDevTeam:VBotPhoneSDKPrivate:1.0.0'
 }
 ```
 Trong file **settings.gradle** thêm 
 ```kotlin
 dependencyResolutionManagement {
-		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-		repositories {
-			mavenCentral()
-			maven { url 'https://jitpack.io' }
-		}
+	repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+	repositories {
+		mavenCentral()
+		maven { url 'https://jitpack.io' }
 	}
+}
 ```
 ### Cách 2
 - Vào trang https://jitpack.io/
