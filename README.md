@@ -16,15 +16,15 @@ Android SDK version 23 trở lên
 
 ## Cấu hình SDK
 
-Trong file **app** → **libs** của dự án thêm **vbotphonesdk.aar**
+### Cách 1
 
-Trong file **app** → **build.gradle** thêm
+Trong file **app** → **build.gradle** thêm 
 
-Cần thêm các thư viện cần thiết để SDK hoạt động
+Cần thêm các thư viện cần thiết để SDK hoạt động 
 
 ```kotlin
 dependencies {
-    //các thư viện cần thiết để SDK hoạt động
+		//các thư viện cần thiết để SDK hoạt động
     implementation("io.reactivex.rxjava2:rxjava:2.2.21")
     implementation("com.google.code.gson:gson:2.11.0")
     implementation("com.squareup.retrofit2:adapter-rxjava2:2.11.0")
@@ -33,12 +33,29 @@ dependencies {
     implementation("com.squareup.okio:okio:3.9.0")
     implementation("org.reactivestreams:reactive-streams:1.0.4")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
     implementation("com.jakewharton.timber:timber:5.0.1")
 
-    implementation files('libs/vbotphonesdk.aar')
+		//Thêm SDK
+    implementation 'com.github.VBotDevTeam:VBotPhoneSDKPrivate:1.0.0'
 }
 ```
-
+Trong file **settings.gradle** thêm 
+```kotlin
+dependencyResolutionManagement {
+		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+		repositories {
+			mavenCentral()
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+### Cách 2
+- Vào trang https://jitpack.io/
+- Trong vào ô *'Git repo url'* nhập **VBotDevTeam/VBotPhoneSDKPrivate**
+- Nhấn **Look up**
+- Chọn version và nhấn **Get it**
+- Làm theo hướng dẫn trên trang web
 ---
 
 ## Quyền
@@ -53,27 +70,27 @@ Danh sách các quyền cần thiết để SDK hoạt động:
 
 •	**Lưu ý**: Đây là quyền **bắt buộc** để SDK hoạt động.
 
-2.	**Quyền truy cập micro**
+2.	**Quyền truy cập micro** 
 
 •	Thu âm giọng nói để gửi trong các cuộc gọi VoIP.
 
 •	**Lưu ý**: Đây là quyền **bắt buộc** để SDK hoạt động.
 
-3.	**Quyền truy cập thiết bị ở gần**
+3.	**Quyền truy cập thiết bị ở gần** 
 
 •	Kết nối với các thiết bị Bluetooth như tai nghe hoặc loa ngoài để sử dụng trong cuộc gọi.
 
-4.	**Quyền thông báo**
+4.	**Quyền thông báo** 
 
 •	Hiển thị thông báo cuộc gọi đến hoặc các sự kiện quan trọng từ SDK.
 
-5.	**Quyền hiển thị trên ứng dụng khác**
+5.	**Quyền hiển thị trên ứng dụng khác** 
 
 •	Hiển thị thông báo quan trọng (thông báo cuộc gọi đến) dưới dạng “màn hình nổi” hoặc “pop-up” ngay cả khi ứng dụng đang ở chế độ nền hoặc màn hình khóa.
 
 ## Proguard
 
-Khi sử dụng proguard cần thêm để sdk có thể hoạt động bình thường
+VBotPhoneSDK yêu cầu một bộ quy tắc ProGuard. Các đoạn mã sau đây cung cấp các quy tắc ProGuard phù hợp dựa trên phiên bản được ứng dụng của bạn sử dụng.
 
 ```kotlin
 -keep class com.vpmedia.vbotphonesdk.** {*;}
@@ -94,7 +111,7 @@ fun setup(context: Context, token: String)
 ```
 
 Trong đó:
-- **token** là App Token, đại diện cho ứng dụng của bạn được dùng để xác thực với máy chủ VBot
+- **token** là App Token, đại diện cho ứng dụng của bạn được dùng để xác thực với máy chủ VBot 
 - **config** là cấu hình tùy chọn cho SDK
 
 ---
